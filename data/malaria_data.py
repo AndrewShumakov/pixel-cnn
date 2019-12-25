@@ -6,7 +6,7 @@ import numpy as np
 from PIL import Image
 import pickle
 
-def maybe_download_and_extract(data_dir, url='https://www.kaggle.com/iarunava/cell-images-for-detecting-malaria/download'):
+def maybe_download_and_extract(data_dir, url='ftp://lhcftp.nlm.nih.gov/Open-Access-Datasets/Malaria/cell_images.zip'):
     if not os.path.exists(os.path.join(data_dir, 'Dataset_test_64')):
         if not os.path.exists(data_dir):
             os.makedirs(data_dir)
