@@ -27,9 +27,11 @@ def unpickle(images, labels):
     io = open(images, 'rb')
     lo = open(labels, 'rb')
     if (sys.version_info >= (3, 0)):
-        import pickle
-        i = pickle.load(io)
-        l = pickle.load(lo)
+        import pickle as p
+        i = p.load(file(images))
+        l = p.load(file(labels))
+        #i = pickle.load(io)
+        #l = pickle.load(lo)
     else:
         import cPickle
         i = cPickle.load(io)
