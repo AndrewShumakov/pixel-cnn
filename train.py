@@ -70,7 +70,7 @@ if args.data_set == 'cifar':
 elif args.data_set == 'imagenet':
     import data.imagenet_data as imagenet_data
     DataLoader = imagenet_data.DataLoader
-elif args.data_set == 'malaria'
+elif args.data_set == 'malaria':
     import data.malaria_data as malaria_data
     DataLoader = malaria_data.DataLoader
 else:
