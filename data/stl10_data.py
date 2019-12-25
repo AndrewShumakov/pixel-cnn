@@ -1,7 +1,4 @@
-"""
-Utilities for downloading and unpacking the CIFAR-10 dataset, originally published
-by Krizhevsky et al. and hosted here: https://www.cs.toronto.edu/~kriz/cifar.html
-"""
+
 
 import os
 import sys
@@ -9,7 +6,7 @@ import tarfile
 from six.moves import urllib
 import numpy as np
 
-def maybe_download_and_extract(data_dir, url='http://www.cs.toronto.edu/~kriz/cifar-10-python.tar.gz'):
+def maybe_download_and_extract(data_dir, url='http://ai.stanford.edu/~acoates/stl10/stl10_binary.tar.gz'):
     if not os.path.exists(os.path.join(data_dir, 'cifar-10-batches-py')):
         if not os.path.exists(data_dir):
             os.makedirs(data_dir)
@@ -26,21 +23,25 @@ def maybe_download_and_extract(data_dir, url='http://www.cs.toronto.edu/~kriz/ci
             print('Successfully downloaded', filename, statinfo.st_size, 'bytes.')
             tarfile.open(filepath, 'r:gz').extractall(data_dir)
 
-def unpickle(file):
-    fo = open(file, 'rb')
+def unpickle(images, labels):
+    io = open(images, 'rb')
+    lo = open(labels, 'rb')
     if (sys.version_info >= (3, 0)):
         import pickle
-        d = pickle.load(fo, encoding='latin1')
+        i = pickle.load(io, encoding='latin1')
+        l = pickle.load(lo, encoding='latin1')
     else:
         import cPickle
-        d = cPickle.load(fo)
-    fo.close()
-    return {'x': d['data'].reshape((10000,3,32,32)), 'y': np.array(d['labels']).astype(np.uint8)}
+        i = cPickle.load(io)
+        l = cPickle.load(lo)
+    io.close()
+    lo.close()
+    return {'x': i.reshape((5000,3,96,96)), 'y': np.array(l).astype(np.uint8)}
 
 def load(data_dir, subset='train'):
     maybe_download_and_extract(data_dir)
     if subset=='train':
-        train_data = [unpickle(os.path.join(data_dir,'cifar-10-batches-py','data_batch_' + str(i))) for i in range(1,6)]
+        train_data = [unpickle(os.path.join(data_dir,'data','stl10_binary','train_X.bin'), os.path.join(data_dir,'data','stl10_binary','train_y.bin'))]
         trainx = np.concatenate([d['x'] for d in train_data],axis=0)
         trainy = np.concatenate([d['y'] for d in train_data],axis=0)
         return trainx, trainy
