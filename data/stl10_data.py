@@ -25,18 +25,20 @@ def maybe_download_and_extract(data_dir, url='http://ai.stanford.edu/~acoates/st
 
 def unpickle(images, labels):
     io = open(images, 'rb')
-    lo = open(labels, 'rb')
     if (sys.version_info >= (3, 0)):
-        import pickle as p
-        i = p.load(file(images))
-        l = p.load(file(labels))
-        #i = pickle.load(io)
-        #l = pickle.load(lo)
+        import pickle
+        i = pickle.load(io, encoding='latin1')
     else:
         import cPickle
         i = cPickle.load(io)
-        l = cPickle.load(lo)
     io.close()
+    lo = open(labels, 'rb')
+    if (sys.version_info >= (3, 0)):
+        import pickle
+        l = pickle.load(lo, encoding='latin1')
+    else:
+        import cPickle
+        l = cPickle.load(lo)
     lo.close()
     return {'x': i.reshape((5000,3,96,96)), 'y': np.array(l).astype(np.uint8)}
 
