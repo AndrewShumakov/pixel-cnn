@@ -219,7 +219,7 @@ with tf.Session() as sess:
             l,_ = sess.run([bits_per_dim, optimizer], feed_dict)
             train_losses.append(l)
             i += 1
-            if i % 50 == 0:
+            if i % 1000 == 0:
                 print(i)
         print('check point 1')
         train_loss_gen = np.mean(train_losses)
