@@ -211,12 +211,15 @@ with tf.Session() as sess:
         # train for one epoch
         train_losses = []
         for d in train_data:
+            print('start for')
             feed_dict = make_feed_dict(d)
             # forward/backward/update model on each gpu
             lr *= args.lr_decay
             feed_dict.update({ tf_lr: lr })
+            print('after update')
             l,_ = sess.run([bits_per_dim, optimizer], feed_dict)
             train_losses.append(l)
+            print('end for')
         print('check point 1')
         train_loss_gen = np.mean(train_losses)
 
