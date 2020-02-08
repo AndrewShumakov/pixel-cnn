@@ -217,6 +217,7 @@ with tf.Session() as sess:
             feed_dict.update({ tf_lr: lr })
             l,_ = sess.run([bits_per_dim, optimizer], feed_dict)
             train_losses.append(l)
+        print('check point 1')
         train_loss_gen = np.mean(train_losses)
 
         # compute likelihood over test data
@@ -225,6 +226,7 @@ with tf.Session() as sess:
             feed_dict = make_feed_dict(d)
             l = sess.run(bits_per_dim_test, feed_dict)
             test_losses.append(l)
+        print('check point 2')
         test_loss_gen = np.mean(test_losses)
         test_bpd.append(test_loss_gen)
 
