@@ -217,7 +217,7 @@ with tf.Session() as sess:
             feed_dict.update({ tf_lr: lr })
             l,_ = sess.run([bits_per_dim, optimizer], feed_dict)
             train_losses.append(l)
-            print(len(train_data))
+            print(len(train_data.labels))
         print('check point 1')
         train_loss_gen = np.mean(train_losses)
 
