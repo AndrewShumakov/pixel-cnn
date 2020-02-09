@@ -26,7 +26,7 @@ def maybe_download_and_extract(data_dir, url='http://ai.stanford.edu/~acoates/st
             statinfo = os.stat(filepath)
             print('Successfully downloaded', filename, statinfo.st_size, 'bytes.', filepath)
             tarfile.open(filepath, 'r:gz').extractall(data_dir)
-            print(os.listdir(os.path.join(data_dir)))
+            print(os.listdir(os.path.join(data_dir, 'stl10_binary')))
 
 '''
 def unpickle(file):
