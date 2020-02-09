@@ -26,7 +26,7 @@ def maybe_download_and_extract(data_dir, url='http://ai.stanford.edu/~acoates/st
             statinfo = os.stat(filepath)
             print('Successfully downloaded', filename, statinfo.st_size, 'bytes.', filepath)
             tarfile.open(filepath, 'r:gz').extractall(data_dir)
-            print(os.listdir(os.path.join(data_dir, 'stl10_binary')))
+            print(os.path.join(data_dir, 'stl10_binary'), os.listdir(os.path(data_dir)))
 
 '''
 def unpickle(file):
@@ -47,15 +47,15 @@ def load(data_dir, subset='train'):
         #train_data = [unpickle(os.path.join(data_dir,'cifar-10-batches-py','data_batch_' + str(i))) for i in range(1,6)]
         #trainx = np.concatenate([d['x'] for d in train_data],axis=0)
         #trainy = np.concatenate([d['y'] for d in train_data],axis=0)
-        trainx = stl10_input.read_all_images(os.path.join(data_dir, 'train_X.bin'))
-        trainy = stl10_input.read_labels(os.path.join(data_dir, 'train_y.bin'))
+        trainx = stl10_input.read_all_images(os.path.join(data_dir, 'stl10_binary', 'train_X.bin'))
+        trainy = stl10_input.read_labels(os.path.join(data_dir, 'stl10_binary', 'train_y.bin'))
         return trainx, trainy
     elif subset=='test':
         #test_data = unpickle(os.path.join(data_dir,'cifar-10-batches-py','test_batch'))
         #testx = test_data['x']
         #testy = test_data['y']
-        testx = stl10_input.read_all_images(os.path.join(data_dir, 'test_X.bin'))
-        testy = stl10_input.read_labels(os.path.join(data_dir, 'test_y.bin'))
+        testx = stl10_input.read_all_images(os.path.join(data_dir, 'stl10_binary', 'test_X.bin'))
+        testy = stl10_input.read_labels(os.path.join(data_dir, 'stl10_binary', 'test_y.bin'))
         return testx, testy
     else:
         raise NotImplementedError('subset should be either train or test')
