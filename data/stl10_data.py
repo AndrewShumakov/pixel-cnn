@@ -1,4 +1,7 @@
-
+"""
+Utilities for downloading and unpacking the CIFAR-10 dataset, originally published
+by Krizhevsky et al. and hosted here: https://www.cs.toronto.edu/~kriz/cifar.html
+"""
 
 import os
 import sys
@@ -23,29 +26,21 @@ def maybe_download_and_extract(data_dir, url='http://ai.stanford.edu/~acoates/st
             print('Successfully downloaded', filename, statinfo.st_size, 'bytes.')
             tarfile.open(filepath, 'r:gz').extractall(data_dir)
 
-def unpickle(images, labels):
-    io = open(images, 'rb')
+def unpickle(file):
+    fo = open(file, 'rb')
     if (sys.version_info >= (3, 0)):
         import pickle
-        i = pickle.load(io, dtype=np.uint8)
+        d = pickle.load(fo, encoding='latin1')
     else:
         import cPickle
-        i = cPickle.load(io)
-    io.close()
-    lo = open(labels, 'rb')
-    if (sys.version_info >= (3, 0)):
-        import pickle
-        l = pickle.load(lo, encoding='latin1')
-    else:
-        import cPickle
-        l = cPickle.load(lo)
-    lo.close()
-    return {'x': i.reshape((5000,3,96,96)), 'y': np.array(l).astype(np.uint8)}
+        d = cPickle.load(fo)
+    fo.close()
+    return {'x': d['data'].reshape((10000,3,32,32)), 'y': np.array(d['labels']).astype(np.uint8)}
 
 def load(data_dir, subset='train'):
     maybe_download_and_extract(data_dir)
     if subset=='train':
-        train_data = [unpickle(os.path.join(data_dir,'stl10_binary','train_X.bin'), os.path.join(data_dir,'stl10_binary','train_y.bin'))]
+        train_data = [unpickle(os.path.join(data_dir,'cifar-10-batches-py','data_batch_' + str(i))) for i in range(1,6)]
         trainx = np.concatenate([d['x'] for d in train_data],axis=0)
         trainy = np.concatenate([d['y'] for d in train_data],axis=0)
         return trainx, trainy
@@ -123,3 +118,5 @@ class DataLoader(object):
             return x
 
     next = __next__  # Python 2 compatibility (https://stackoverflow.com/questions/29578469/how-to-make-an-object-both-a-python2-and-python3-iterator)
+
+
