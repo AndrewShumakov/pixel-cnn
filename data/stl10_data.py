@@ -46,7 +46,7 @@ def load(data_dir, subset='train'):
         #train_data = [unpickle(os.path.join(data_dir,'cifar-10-batches-py','data_batch_' + str(i))) for i in range(1,6)]
         #trainx = np.concatenate([d['x'] for d in train_data],axis=0)
         #trainy = np.concatenate([d['y'] for d in train_data],axis=0)
-        trainx = stl10_input.read_all_images(os.path.join(data_dir, 'strain_X.bin'))
+        trainx = stl10_input.read_all_images(os.path.join(data_dir, 'train_X.bin'))
         trainy = stl10_input.read_labels(os.path.join(data_dir, 'train_y.bin'))
         return trainx, trainy
     elif subset=='test':
