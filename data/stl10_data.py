@@ -8,7 +8,7 @@ import sys
 import tarfile
 from six.moves import urllib
 import numpy as np
-import stl10_input
+import data.stl10_input as stl10_input
 
 def maybe_download_and_extract(data_dir, url='http://ai.stanford.edu/~acoates/stl10/stl10_binary.tar.gz'):
     if not os.path.exists(os.path.join(data_dir, 'stl-10-batches-py')):
