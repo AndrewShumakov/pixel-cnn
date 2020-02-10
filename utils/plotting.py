@@ -11,6 +11,7 @@ def plot_img(img, title=None):
         plt.title(title)
     plt.axis('off')
     plt.tight_layout()
+    plt.show()
 
 def img_stretch(img):
     img = img.astype(float)
