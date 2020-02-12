@@ -26,7 +26,8 @@ parser.add_argument('-i', '--data_dir', type=str, default='/local_home/tim/pxpp/
 parser.add_argument('-o', '--save_dir', type=str, default='/local_home/tim/pxpp/save', help='Location for parameter checkpoints and samples')
 parser.add_argument('-d', '--data_set', type=str, default='cifar', help='Can be either cifar|imagenet|stl')
 parser.add_argument('-t', '--save_interval', type=int, default=20, help='Every how many epochs to write checkpoint/samples?')
-parser.add_argument('-r', '--load_params', dest='load_params', action='store_true', help='Restore training from previous model checkpoint?')
+#parser.add_argument('-r', '--load_params', dest='load_params', action='store_true', help='Restore training from previous model checkpoint?')
+parser.add_argument('-r', '--load_params', type = int, help='Restore training from previous model checkpoint?')
 # model
 parser.add_argument('-q', '--nr_resnet', type=int, default=5, help='Number of residual blocks per stage of the model')
 parser.add_argument('-n', '--nr_filters', type=int, default=160, help='Number of filters to use across the model. Higher = larger model.')
@@ -200,7 +201,17 @@ with tf.Session() as sess:
         # init
         if epoch == 0:
             train_data.reset()  # rewind the iterator back to 0 to do one full epoch
-            if args.load_params:
+            if args.load_params and args.ckpt_folder_drive_dir:
+                filelist = [f for f in os.listdir(args.ckpt_folder_drive_dir) if not f.endswith('.png')]
+                data_file = args.ckpt_folder_drive_dir+'/'+[f for f in filelist if '.data' in f][0]
+                meta_file = args.ckpt_folder_drive_dir+'/'+[f for f in filelist if '.meta' in f][0]
+                print('!!!',meta_file)
+                #sess = tf.Session()
+                #saver = tf.train.import_meta_graph(meta_file)
+                saver.restore(sess, data_file)
+                print('LOAD EPOCH : ', args.load_params)
+                epoch = int(args.load_params)+1
+            elif args.load_params:
                 ckpt_file = args.save_dir + '/params_' + args.data_set + '.ckpt'
                 print('restoring parameters from', ckpt_file)
                 saver.restore(sess, ckpt_file)
