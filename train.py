@@ -207,8 +207,9 @@ with tf.Session() as sess:
                 meta_file = args.ckpt_folder_drive_dir+'/'+[f for f in filelist if '.meta' in f][0]
                 print('!!!',meta_file)
                 #sess = tf.Session()
-                saver = tf.train.import_meta_graph(meta_file)
-                saver.restore(sess, data_file)
+                #saver = tf.train.import_meta_graph(meta_file)
+                #saver.restore(sess, data_file)
+                saver.restore(sess, os.path.join(args.ckpt_folder_drive_dir, 'params_' + args.data_set + '.ckpt-%s' % args.load_params))
                 print('LOAD EPOCH : ', args.load_params)
                 epoch = int(args.load_params)+1
             elif args.load_params:
